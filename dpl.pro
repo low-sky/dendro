@@ -82,15 +82,14 @@ pro dpl, input, _extra = ex, annotate = annotate, labels = labels, $
         label = label_region(reform(highlight))
         for chunk = 1, max(label) do begin
           subind = where(label eq chunk, ct)
-          if ct eq 1 or keyword_set(block) then begin
+          if ct eq 1 or n_elements(block) gt 0 then begin
             yvals = levels[subind]
             xvals = fltarr(ct)
             for j = 0, ct-1 do xvals[j] = xpos[max(where(yvals[j] le ypos))]
             usersym, [-0.5, 0.5, 0.5, -0.5, -0.5], $
-              [-0.1, -0.1, 0.1, 0.1, -0.1], /fill
+              [-0.1, -0.1, 0.1, 0.1, -0.1]*block, /fill
             plots, xvals, yvals, ps = 8, color = hcolor, $
               symsize = 1, /con
-
           endif else begin
             yvals = levels[subind]
             corners = intersection(yvals, ypos, corner_ct, $
